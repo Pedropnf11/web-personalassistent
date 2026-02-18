@@ -1,6 +1,11 @@
 import { Flame, Shield } from 'lucide-react'
 
-function Header({ streak, totalStreak }) {
+interface HeaderProps {
+    streak: number
+    totalStreak: number
+}
+
+function Header({ streak, totalStreak }: HeaderProps) {
     return (
         <header className="bg-cave-dark border-b border-cave-light px-8 py-6">
             <div className="max-w-7xl mx-auto flex justify-between items-center">

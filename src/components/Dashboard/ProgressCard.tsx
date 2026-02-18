@@ -1,5 +1,10 @@
-function ProgressCard({ completedCount, totalCount }) {
-    const progressPercentage = (completedCount / totalCount) * 100
+interface ProgressCardProps {
+    completedCount: number
+    totalCount: number
+}
+
+function ProgressCard({ completedCount, totalCount }: ProgressCardProps) {
+    const progressPercentage = totalCount === 0 ? 0 : (completedCount / totalCount) * 100
 
     return (
         <div className="card mb-8">

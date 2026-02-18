@@ -1,12 +1,14 @@
 import { useState, ReactNode } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Dumbbell, Book, Brain, NotebookPen, User, Menu } from 'lucide-react'
+import { Dumbbell, Book, Brain, NotebookPen, User, Menu, CalendarDays, LogOut } from 'lucide-react'
+import { useAuth } from '../../contexts/AuthContext'
 
 interface LayoutProps {
     children: ReactNode
 }
 
 function Layout({ children }: LayoutProps) {
+    const { user, logout } = useAuth()
     const [sidebarOpen, setSidebarOpen] = useState(false)
     const location = useLocation()
 
@@ -16,6 +18,7 @@ function Layout({ children }: LayoutProps) {
         { name: 'Treino', path: '/treino', icon: <Dumbbell size={24} /> },
         { name: 'Bilblioteca', path: '/livros', icon: <Book size={24} /> },
         { name: 'Meditação', path: '/meditacao', icon: <Brain size={24} /> },
+        { name: 'Rotina', path: '/rotina', icon: <CalendarDays size={24} /> }, // Using CalendarDays icon
         { name: 'Journaling', path: '/journal', icon: <NotebookPen size={24} /> },
     ]
 
@@ -72,12 +75,12 @@ function Layout({ children }: LayoutProps) {
                     </nav>
 
                     {/* Perfil at bottom */}
-                    <div className="p-4 border-t border-void-border/50 relative z-10">
+                    <div className="p-4 border-t border-void-border/50 relative z-10 flex items-center justify-between gap-2">
                         <Link
                             to="/perfil"
                             onClick={() => setSidebarOpen(false)}
                             className={`
-                flex items-center gap-4 px-4 py-3 rounded-xl
+                flex items-center gap-3 px-3 py-3 rounded-xl flex-1
                 transition-all duration-300 border border-transparent
                 ${isActive('/perfil')
                                     ? 'bg-void-card border-primary/30 shadow-glow-purple'
@@ -85,16 +88,24 @@ function Layout({ children }: LayoutProps) {
                                 }
               `}
                         >
-                            <div className="w-10 h-10 rounded-full bg-gradient-premium p-[1px]">
+                            <div className="w-9 h-9 rounded-full bg-gradient-premium p-[1px] flex-shrink-0">
                                 <div className="w-full h-full rounded-full bg-void-dark flex items-center justify-center">
-                                    <User size={20} className="text-white" />
+                                    <User size={18} className="text-white" />
                                 </div>
                             </div>
-                            <div>
-                                <div className="font-bold text-white">Pedro</div>
-                                <div className="text-xs text-primary-glow">High Performer</div>
+                            <div className="overflow-hidden">
+                                <div className="font-bold text-white truncate">{user?.name || 'User'}</div>
+                                <div className="text-[10px] text-primary-glow uppercase tracking-wider font-bold">Mentor AI</div>
                             </div>
                         </Link>
+
+                        <button
+                            onClick={logout}
+                            className="p-3 rounded-xl text-gray-500 hover:text-red-500 hover:bg-red-500/10 transition-all border border-transparent hover:border-red-500/20"
+                            title="Sair"
+                        >
+                            <LogOut size={20} />
+                        </button>
                     </div>
                 </div>
             </aside>
